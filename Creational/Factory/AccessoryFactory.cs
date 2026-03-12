@@ -11,6 +11,8 @@ namespace FashionAtelierApp.Creational.Factory
         public IAccessory CreateAccessory(string type)
         {
             if (type == "bag") return new Handbag();
+            else if (type == "belt") return new Belt();
+            else if (type == "scarf") return new Scarf();
             return null;
         }
     }

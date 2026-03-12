@@ -9,7 +9,11 @@ namespace FashionAtelierApp.Creational.Singleton
     public class FabricWarehouse
     {
         private static FabricWarehouse _instance;
-        private FabricWarehouse() { }
+        public List<string> Inventory { get; private set; }
+        private FabricWarehouse()
+        {
+            Inventory = new List<string>();
+        }
 
         public static FabricWarehouse GetInstance()
         {
@@ -20,6 +24,17 @@ namespace FashionAtelierApp.Creational.Singleton
             return _instance;
         }
 
-        public void ShowStatus() => System.Console.WriteLine("Склад працює.");
+        public void AddFabric(string fabric)
+        {
+            Inventory.Add(fabric);
+        }
+        public void ShowStatus()
+        {
+            System.Console.WriteLine($"Склад працює. Тканин в наявності: {Inventory.Count} шт.");
+            foreach (var item in Inventory)
+            {
+                System.Console.WriteLine($" - {item}");
+            }
+        }
     }
 }

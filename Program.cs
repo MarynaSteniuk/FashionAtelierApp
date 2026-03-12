@@ -13,31 +13,57 @@ class Program
 {
     static void Main(string[] args)
     {
-        Console.WriteLine("--- Тестування патернів Будинку Моди ---\n");
+        Console.WriteLine("=== БУДИНОК МОДИ: ===\n");
 
-        // 1. Singleton
-        FabricWarehouse.GetInstance().ShowStatus();
+        Console.WriteLine("1. SINGLETON:");
+        var manager1 = FabricWarehouse.GetInstance();
+        manager1.AddFabric("Шовк");
+        var manager2 = FabricWarehouse.GetInstance(); 
+        manager2.AddFabric("Вовна");
+        manager2.ShowStatus(); 
+        Console.WriteLine();
 
-        // 2. Factory
-        var accessory = new AccessoryFactory().CreateAccessory("bag");
-        Console.WriteLine($"Factory: {accessory.GetName()}");
+        Console.WriteLine("2. FACTORY:");
+        var accessoryFactory = new AccessoryFactory();
+        Console.WriteLine($"- Зроблено: {accessoryFactory.CreateAccessory("bag").GetName()}");
+        Console.WriteLine($"- Зроблено: {accessoryFactory.CreateAccessory("belt").GetName()}");
+        Console.WriteLine($"- Зроблено: {accessoryFactory.CreateAccessory("scarf").GetName()}");
+        Console.WriteLine();
 
-        // 3. Factory Method
-        Atelier atelier = new DressAtelier();
-        Console.WriteLine($"Factory Method: {atelier.CreateGarment().GetDescription()}");
+        Console.WriteLine("3. FACTORY METHOD:");
+        Atelier dressAtelier = new DressAtelier();
+        Atelier coatAtelier = new CoatAtelier();
+        Console.WriteLine($"- Цех 1 зшив: {dressAtelier.CreateGarment().GetDescription()}");
+        Console.WriteLine($"- Цех 2 зшив: {coatAtelier.CreateGarment().GetDescription()}");
+        Console.WriteLine();
 
-        // 4. Abstract Factory
-        ICollectionFactory collection = new SummerCollectionFactory();
-        Console.WriteLine($"Abstract Factory: {collection.CreateClothing().GetDetails()} та {collection.CreateShoes().GetDetails()}");
+        Console.WriteLine("4. ABSTRACT FACTORY:");
+        Boutique summerBoutique = new Boutique(new SummerCollectionFactory());
+        Console.Write("- Літній сезон -> ");
+        summerBoutique.ShowShowcase();
+        Boutique winterBoutique = new Boutique(new WinterCollectionFactory());
+        Console.Write("- Зимовий сезон -> ");
+        winterBoutique.ShowShowcase();
+        Console.WriteLine();
 
-        // 5. Builder
-        var builder = new SilkDressBuilder();
-        new FashionDirector().Construct(builder);
-        Console.WriteLine($"Builder: Сукня з тканини {builder.GetResult().Fabric}");
+        Console.WriteLine("5. BUILDER:");
+        var director = new FashionDirector();
+        var silkBuilder = new SilkDressBuilder();
+        var cottonBuilder = new CottonDressBuilder();
+        director.Construct(silkBuilder);
+        director.Construct(cottonBuilder);
+        Console.WriteLine($"- Замовлення 1: Сукня, тканина - {silkBuilder.GetResult().Fabric}");
+        Console.WriteLine($"- Замовлення 2: Сукня, тканина - {cottonBuilder.GetResult().Fabric}");
+        Console.WriteLine();
 
-        // 6. Prototype
-        var originalPattern = new DressPattern("M");
-        var copiedPattern = (DressPattern)originalPattern.Clone();
-        Console.WriteLine($"Prototype: Скопійовано викройку розміру {copiedPattern.Size}");
+        Console.WriteLine("6. PROTOTYPE:");
+        var baseDressPattern = new DressPattern("M");
+        var baseTrousersPattern = new TrousersPattern("Кльош");
+        var clonedDress = (DressPattern)baseDressPattern.Clone();
+        var clonedTrousers = (TrousersPattern)baseTrousersPattern.Clone();
+        Console.WriteLine($"- Клон лекала сукні. Розмір: {clonedDress.Size}");
+        Console.WriteLine($"- Клон лекала штанів. Стиль: {clonedTrousers.Style}");
+
+        Console.ReadLine();
     }
 }
