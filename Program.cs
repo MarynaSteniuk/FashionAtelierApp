@@ -15,6 +15,16 @@ using FashionAtelierApp.Structural.Decorator;
 using FashionAtelierApp.Structural.Facade;
 using FashionAtelierApp.Structural.Flyweight;
 using FashionAtelierApp.Structural.Proxy;
+using FashionAtelierApp.Behavioral.ChainOfResponsibility;
+using FashionAtelierApp.Behavioral.Command;
+using FashionAtelierApp.Behavioral.Iterator;
+using FashionAtelierApp.Behavioral.Mediator;
+using FashionAtelierApp.Behavioral.Memento;
+using FashionAtelierApp.Behavioral.Observer;
+using FashionAtelierApp.Behavioral.State;
+using FashionAtelierApp.Behavioral.Strategy;
+using FashionAtelierApp.Behavioral.TemplateMethod;
+using FashionAtelierApp.Behavioral.Visitor;
 
 class Program
 {
@@ -83,7 +93,7 @@ class Program
         Console.WriteLine("2. BRIDGE:");
         IPrint floralPrint = new FloralPrint();
         IPrint checkeredPrint = new CheckeredPrint();
-        Garment eveningDress = new EveningDress(floralPrint);
+        Garment eveningDress = new FashionAtelierApp.Structural.Bridge.EveningDress(floralPrint);
         Garment winterCoat = new FashionAtelierApp.Structural.Bridge.WinterCoat(checkeredPrint);
         Console.WriteLine($"  {eveningDress.Manufacture()}");
         Console.WriteLine($"  {winterCoat.Manufacture()}");
@@ -130,7 +140,19 @@ class Program
         VIPCollectionProxy proxy2 = new VIPCollectionProxy(vipCustomer);
         Console.WriteLine($"  {proxy1.ViewCollection()}");
         Console.WriteLine($"  {proxy2.ViewCollection()}");
-
         Console.ReadLine();
+
+        Console.WriteLine("\n\n=== ПОВЕДІНКОВІ ПАТЕРНИ ===\n");
+        new ChainClient().RunChain(); Console.WriteLine();
+        new CommandClient().RunCommand(); Console.WriteLine();
+        new IteratorClient().RunIterator(); Console.WriteLine();
+        new MediatorClient().RunMediator(); Console.WriteLine();
+        new MementoClient().RunMemento(); Console.WriteLine();
+        new ObserverClient().RunObserver(); Console.WriteLine();
+        new StateClient().RunState(); Console.WriteLine();
+        new StrategyClient().RunStrategy(); Console.WriteLine();
+        new TemplateMethodClient().RunTemplateMethod(); Console.WriteLine();
+        new VisitorClient().RunVisitor(); Console.WriteLine();
+
     }
 }
