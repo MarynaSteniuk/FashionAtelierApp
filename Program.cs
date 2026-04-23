@@ -25,6 +25,10 @@ using FashionAtelierApp.Behavioral.State;
 using FashionAtelierApp.Behavioral.Strategy;
 using FashionAtelierApp.Behavioral.TemplateMethod;
 using FashionAtelierApp.Behavioral.Visitor;
+using FashionAtelierApp.FunctionalPatterns.Strategy;
+using FashionAtelierApp.FunctionalPatterns.FactoryMethod;
+using FashionAtelierApp.FunctionalPatterns.Decorator;
+using FashionAtelierApp.FunctionalPatterns.ExecuteAround;
 
 class Program
 {
@@ -154,5 +158,14 @@ class Program
         new TemplateMethodClient().RunTemplateMethod(); Console.WriteLine();
         new VisitorClient().RunVisitor(); Console.WriteLine();
 
+        Console.WriteLine("\n\n=========================================================");
+        Console.WriteLine("ЛАБОРАТОРНА РОБОТА 5: ФУНКЦІОНАЛЬНІ ПАТЕРНИ");
+        Console.WriteLine("=========================================================");
+        StrategyTest.Run();
+        FactoryTest.Run();
+        DecoratorTest.Run();
+        ExecuteAroundTest.Run();
+
+        Console.ReadLine();
     }
 }
