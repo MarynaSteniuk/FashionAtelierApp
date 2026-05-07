@@ -1,21 +1,4 @@
-﻿using System;
-using FashionAtelierApp.Creational;
-
-using System;
-using FashionAtelierApp.Creational.Singleton;
-using FashionAtelierApp.Creational.Factory;
-using FashionAtelierApp.Creational.FactoryMethod;
-using FashionAtelierApp.Creational.AbstractFactory;
-using FashionAtelierApp.Creational.Builder;
-using FashionAtelierApp.Creational.Prototype;
-using FashionAtelierApp.Structural.Adapter;
-using FashionAtelierApp.Structural.Bridge;
-using FashionAtelierApp.Structural.Composite;
-using FashionAtelierApp.Structural.Decorator;
-using FashionAtelierApp.Structural.Facade;
-using FashionAtelierApp.Structural.Flyweight;
-using FashionAtelierApp.Structural.Proxy;
-using FashionAtelierApp.Behavioral.ChainOfResponsibility;
+﻿using FashionAtelierApp.Behavioral.ChainOfResponsibility;
 using FashionAtelierApp.Behavioral.Command;
 using FashionAtelierApp.Behavioral.Iterator;
 using FashionAtelierApp.Behavioral.Mediator;
@@ -25,10 +8,28 @@ using FashionAtelierApp.Behavioral.State;
 using FashionAtelierApp.Behavioral.Strategy;
 using FashionAtelierApp.Behavioral.TemplateMethod;
 using FashionAtelierApp.Behavioral.Visitor;
-using FashionAtelierApp.FunctionalPatterns.Strategy;
-using FashionAtelierApp.FunctionalPatterns.FactoryMethod;
+using FashionAtelierApp.Creational;
+using FashionAtelierApp.Creational.AbstractFactory;
+using FashionAtelierApp.Creational.Builder;
+using FashionAtelierApp.Creational.Factory;
+using FashionAtelierApp.Creational.FactoryMethod;
+using FashionAtelierApp.Creational.Prototype;
+using FashionAtelierApp.Creational.Singleton;
+using FashionAtelierApp.DependencyInjectionLab;
 using FashionAtelierApp.FunctionalPatterns.Decorator;
 using FashionAtelierApp.FunctionalPatterns.ExecuteAround;
+using FashionAtelierApp.FunctionalPatterns.FactoryMethod;
+using FashionAtelierApp.FunctionalPatterns.Strategy;
+using FashionAtelierApp.Structural.Adapter;
+using FashionAtelierApp.Structural.Bridge;
+using FashionAtelierApp.Structural.Composite;
+using FashionAtelierApp.Structural.Decorator;
+using FashionAtelierApp.Structural.Facade;
+using FashionAtelierApp.Structural.Flyweight;
+using FashionAtelierApp.Structural.Proxy;
+using Microsoft.Extensions.DependencyInjection;
+using FashionAtelierApp.DependencyInjectionLab;
+using System;
 
 class Program
 {
@@ -37,9 +38,9 @@ class Program
         Console.WriteLine("=== БУДИНОК МОДИ: ===\n");
         Console.WriteLine("=== ПОРОДЖУВАЛЬНІ ПАТЕРНИ ===\n");
         Console.WriteLine("1. SINGLETON:");
-        var manager1 = FabricWarehouse.GetInstance();
+        var manager1 = FashionAtelierApp.Creational.Singleton.FabricWarehouse.GetInstance();
         manager1.AddFabric("Шовк");
-        var manager2 = FabricWarehouse.GetInstance(); 
+        var manager2 = FashionAtelierApp.Creational.Singleton.FabricWarehouse.GetInstance();
         manager2.AddFabric("Вовна");
         manager2.ShowStatus(); 
         Console.WriteLine();
@@ -165,6 +166,26 @@ class Program
         FactoryTest.Run();
         DecoratorTest.Run();
         ExecuteAroundTest.Run();
+
+        Console.OutputEncoding = System.Text.Encoding.UTF8;
+        Console.WriteLine("\n=== Лабораторна робота №6: Dependency Injection ===\n");
+        var serviceCollection = new ServiceCollection();
+
+        serviceCollection.AddTransient<ILogger, ConsoleLogger>();
+        serviceCollection.AddTransient<IFabricWarehouse, FashionAtelierApp.DependencyInjectionLab.FabricWarehouse>();
+        serviceCollection.AddTransient<ISewingEquipment, SewingEquipment>();
+        serviceCollection.AddTransient<ITransport, CarTransport>();
+
+        serviceCollection.AddTransient<IDeliveryService, DeliveryService>();
+        serviceCollection.AddTransient<ITailorService, TailorService>();
+
+        serviceCollection.AddTransient<OrderProcessor>();
+
+        var serviceProvider = serviceCollection.BuildServiceProvider();
+
+        var processor = serviceProvider.GetService<OrderProcessor>();
+
+        processor.ProcessNewOrder();
 
         Console.ReadLine();
     }
